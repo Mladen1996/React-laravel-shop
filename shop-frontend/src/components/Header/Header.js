@@ -45,7 +45,7 @@ function Header(){
         <NavLink to="/order-history">Order history</NavLink>
 
         <NavLink to="/user-checkout">
-            <img src="images/shopping-cart.png" />
+            <img src="images/shopping-cart.png" alt="cart-icon"/>
             <span>5</span>
         </NavLink>
         </Nav>

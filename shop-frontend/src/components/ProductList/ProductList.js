@@ -21,6 +21,7 @@ background-color:#00a1f1;
 border: none;
 padding: 12px;
 color: white;
+cursor:pointer;
 `;
 
 function ProductList(){
@@ -36,16 +37,40 @@ function ProductList(){
         setData(result);
     }
 
+    function addToCart(item){
+        console.log(item.name);
+        const itemData=[{
+            name:item.name,
+            price:item.price,
+            image_path:item.image_path,
+        }];
+
+        if(localStorage.getItem('product-info')){
+            const items=JSON.parse(localStorage.getItem('product-info'));
+            const itemData1={
+                name:item.name,
+                price:item.price,
+                image_path:item.image_path,
+            };
+            console.log(items);
+            items.push(itemData1);
+            localStorage.setItem('product-info',JSON.stringify(items));
+        }
+        else{
+            localStorage.setItem('product-info',JSON.stringify(itemData));
+        }
+        
+    }
 
     return(
         <Container>
         {
             data.map((item)=>
             <ProductCard key={item.id}>
-                <img src={'http://localhost:8000/'+item.image_path} />
+                <img src={'http://localhost:8000/'+item.image_path} alt={item.name} />
                 <h3>{item.name}</h3>
                 <p>{item.price} RSD</p>
-                 <CartButton>Add to cart</CartButton>
+                 <CartButton onClick={()=>addToCart(item)}>Add to cart</CartButton>
             </ProductCard>
          
             )
