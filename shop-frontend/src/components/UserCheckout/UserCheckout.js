@@ -61,6 +61,38 @@ function UserCheckout() {
         setTotal(total);
     }, [])
 
+    function confirmTheOrder(){
+
+        var today = new Date();
+
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+        var currentDateTime=date+' '+time;
+
+
+        const orderData=[{
+            items:data,
+            totalPrice:total,
+            dateAndTime:currentDateTime
+        }];
+
+        if(localStorage.getItem('order-history')){
+            const items=JSON.parse(localStorage.getItem('order-history'));
+            const itemData1={
+                items:data,
+                totalPrice:total,
+                dateAndTime:currentDateTime
+            };
+            console.log(items);
+            items.push(itemData1);
+            localStorage.setItem('order-history',JSON.stringify(items));
+        }
+        else{
+            localStorage.setItem('order-history',JSON.stringify(orderData));
+        }
+    }
     
 
     return (
@@ -119,7 +151,7 @@ function UserCheckout() {
                     <input type="text" placeholder="Note" />
                     <br />
 
-                    <button className="btn btn-primary">Confirm the order</button>
+                    <button className="btn btn-primary"  onClick={confirmTheOrder}>Confirm the order</button>
                 </BillingContainer>
             
         </>
