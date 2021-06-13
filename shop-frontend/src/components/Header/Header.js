@@ -15,10 +15,20 @@ h1{
 }
 `;
 const Nav=styled.div` 
+display:flex;
+align-items:center;
 a{
     text-decoration: none;
     padding: 15px;
     color: white;
+}
+span{
+    background-color: black;
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    vertical-align: top;
+    margin-left: 2px;
 }
 `;
 
@@ -31,8 +41,13 @@ function Header(){
         </Logo>
         <Nav>
         <NavLink to="/">Home</NavLink>
-        <NavLink to="/user-checkout">Checkout</NavLink>
+        
         <NavLink to="/order-history">Order history</NavLink>
+
+        <NavLink to="/user-checkout">
+            <img src="images/shopping-cart.png" />
+            <span>5</span>
+        </NavLink>
         </Nav>
         
         </Container>
