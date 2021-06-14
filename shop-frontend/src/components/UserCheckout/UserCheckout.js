@@ -42,10 +42,22 @@ input{
 }
 `;
 
+const Heading=styled.h1`
+text-align:center;
+`;
+
 function UserCheckout() {
 
     const [data, setData] = useState([]);
     const [total,setTotal]=useState(0);
+
+    const [firstName,setFirstName]=useState("");
+    const [lastName,setLastName]=useState("");
+    const [email,setEmail]=useState("");
+    const [address,setAddress]=useState("");
+    const [postalCode,setPostalCode]=useState("");
+    const [city,setCity]=useState("");
+    const [note,setNote]=useState("");
 
     useEffect(() => {
         const products = JSON.parse(localStorage.getItem('product-info'));
@@ -59,7 +71,7 @@ function UserCheckout() {
 
         console.log(totals);
         setTotal(total);
-    }, [])
+    }, [total])
 
     function confirmTheOrder(){
 
@@ -71,11 +83,20 @@ function UserCheckout() {
 
         var currentDateTime=date+' '+time;
 
-
+        const billingInformation={
+            firstName:firstName,
+            lastName:lastName,
+            email:email,
+            address:address,
+            postalCode:postalCode,
+            city:city,
+            note:note
+        }
         const orderData=[{
             items:data,
             totalPrice:total,
-            dateAndTime:currentDateTime
+            dateAndTime:currentDateTime,
+            billingInformation:billingInformation
         }];
 
         if(localStorage.getItem('order-history')){
@@ -83,7 +104,8 @@ function UserCheckout() {
             const itemData1={
                 items:data,
                 totalPrice:total,
-                dateAndTime:currentDateTime
+                dateAndTime:currentDateTime,
+                billingInformation:billingInformation
             };
             console.log(items);
             items.push(itemData1);
@@ -97,7 +119,7 @@ function UserCheckout() {
 
     return (
         <>
-            <h1>UserCheckout</h1>
+            <Heading>User Checkout</Heading>
             <Container>
                 <ProductsTable>
                     <thead>
@@ -115,7 +137,7 @@ function UserCheckout() {
                                 <tr key={item.id}>
                                     <td><img src={'http://localhost:8000/' + item.image_path} alt={item.name} /></td>
                                     <td>{item.name}</td>
-                                    <td>{item.price}</td>
+                                    <td>{item.price} RSD</td>
                                 </tr>
 
                             )
@@ -136,19 +158,19 @@ function UserCheckout() {
                 <BillingContainer>
                     <h2>Billing information</h2>
 
-                    <input type="text" placeholder="First name" />
+                    <input type="text" placeholder="First name" onChange={(e)=>setFirstName(e.target.value)}/>
                     <br />
-                    <input type="text" placeholder="Last name"  />
+                    <input type="text" placeholder="Last name"  onChange={(e)=>setLastName(e.target.value)}/>
                     <br />
-                    <input type="text" placeholder="Email"/>
+                    <input type="text" placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/>
                     <br />
-                    <input type="text" placeholder="Address"/>
+                    <input type="text" placeholder="Address" onChange={(e)=>setAddress(e.target.value)}/>
                     <br />
-                    <input type="text" placeholder="Postal code" />
+                    <input type="text" placeholder="Postal code" onChange={(e)=>setPostalCode(e.target.value)}/>
                     <br />
-                    <input type="text" placeholder="City" />
+                    <input type="text" placeholder="City" onChange={(e)=>setCity(e.target.value)}/>
                     <br />
-                    <input type="text" placeholder="Note" />
+                    <input type="text" placeholder="Note" onChange={(e)=>setNote(e.target.value)}/>
                     <br />
 
                     <button className="btn btn-primary"  onClick={confirmTheOrder}>Confirm the order</button>

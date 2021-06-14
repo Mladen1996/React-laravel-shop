@@ -28,6 +28,10 @@ thead td, tfoot td:first-child{
 
 `;
 
+const Heading=styled.h1`
+text-align:center;
+`;
+
 function OrderHistory(){
 
     const [orders, setOrders] = useState([]);
@@ -40,7 +44,7 @@ function OrderHistory(){
 
     return(
         <>
-        <h1>Order history</h1>
+        <Heading>Order history</Heading>
         <Container>
             <ProductsTable>
             <thead>
@@ -48,6 +52,7 @@ function OrderHistory(){
                             <td>Order id</td>
                             <td>Date and time</td>
                             <td>Items</td>
+                            <td>Billing information</td>
                             <td>Total price</td>
                             
                         </tr>
@@ -64,6 +69,16 @@ function OrderHistory(){
                                         )
                                         
                                         }</td>
+                                    <td>
+                                        <p>{ order.billingInformation.firstName}</p>
+                                        <p>{ order.billingInformation.lastName}</p>
+                                        <p>{ order.billingInformation.email}</p>
+                                        <p>{ order.billingInformation.postalCode}</p>
+                                        <p>{ order.billingInformation.city}</p>
+                                        <p>{ order.billingInformation.address}</p>
+                                        <p>{ order.billingInformation.note}</p>
+                                        
+                                    </td>
                                     <td>{order.totalPrice} RSD</td>
                                 </tr>
 

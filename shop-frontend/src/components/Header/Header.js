@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import styled from 'styled-components';
+import { useState, useEffect } from 'react';
 
 const Container=styled.div` 
 background-color:#00a1f1;
@@ -34,6 +35,14 @@ span{
 
 
 function Header(){
+
+    const [totalItems, setTotalItems] = useState([]);
+
+    useEffect(() => {
+        const products = JSON.parse(localStorage.getItem('product-info'));
+        console.log(products.length);
+        setTotalItems(products.length);
+    }, [])
     return(
         <Container>
         <Logo>
@@ -46,7 +55,7 @@ function Header(){
 
         <NavLink to="/user-checkout">
             <img src="images/shopping-cart.png" alt="cart-icon"/>
-            <span>5</span>
+            <span>{totalItems}</span>
         </NavLink>
         </Nav>
         
