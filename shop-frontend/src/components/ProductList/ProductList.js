@@ -1,11 +1,13 @@
 import React,{useState,useEffect} from 'react';
 import styled from 'styled-components';
+import Header from '../Header/Header';
 
 const Container=styled.div` 
 display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5% 10%;
+    padding: 2% 10%;
+    flex-wrap:wrap;
 
 img{
     width:100%;
@@ -13,7 +15,7 @@ img{
 `;
 
 const ProductCard=styled.div` 
-padding-right:20px;
+width:33%;
 `;
 
 const CartButton=styled.button` 
@@ -26,6 +28,7 @@ cursor:pointer;
 
 function ProductList(){
     const [data,setData]=useState([]);
+    const [counter,setCounter]=useState(0);
 
     useEffect(()=>{
         getData();
@@ -59,11 +62,17 @@ function ProductList(){
         else{
             localStorage.setItem('product-info',JSON.stringify(itemData));
         }
+
+        setCounter(counter => counter + 1);
+        alert(item.name + ' added to cart');
         
     }
 
     return(
+        <>
+        <Header counter={counter} />
         <Container>
+      
         {
             data.map((item)=>
             <ProductCard key={item.id}>
@@ -76,6 +85,7 @@ function ProductList(){
             )
         }
         </Container>
+        </>
     )
 }
 

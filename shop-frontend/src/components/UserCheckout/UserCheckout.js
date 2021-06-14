@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import Header from '../Header/Header';
+import {useHistory} from 'react-router-dom';
 
 const Container = styled.div` 
 display: flex;
@@ -39,12 +41,27 @@ input{
     width:100%;
     height:40px;
     margin-bottom:15px;
+    padding:5px;
+}
+
+.button-group{
+    text-align:center;
 }
 `;
 
 const Heading=styled.h1`
 text-align:center;
 `;
+
+const ConfirmButton=styled.button`
+background-color:#00a1f1;
+border: none;
+padding: 12px;
+color: white;
+cursor:pointer;
+`;
+
+
 
 function UserCheckout() {
 
@@ -59,21 +76,28 @@ function UserCheckout() {
     const [city,setCity]=useState("");
     const [note,setNote]=useState("");
 
+    const history=useHistory();
+
     useEffect(() => {
         const products = JSON.parse(localStorage.getItem('product-info'));
         setData(products);
-        var total=0;
+
+        if(data!=null){
+            var total=0;
         const totals=data.map((item)=>{
         total=total+parseInt(item.price);
-        console.log('Total:'+total);
         return total;
         });
-
         console.log(totals);
-        setTotal(total);
+        console.log(totals[totals.length-1]);
+        setTotal(totals[totals.length-1]);
+        }
+        
     }, [total])
 
     function confirmTheOrder(){
+
+        localStorage.removeItem('product-info');
 
         var today = new Date();
 
@@ -114,13 +138,22 @@ function UserCheckout() {
         else{
             localStorage.setItem('order-history',JSON.stringify(orderData));
         }
+
+        history.push("/order-history");
+        alert('The order has been confirmed');
     }
     
 
     return (
         <>
+            <Header />
             <Heading>User Checkout</Heading>
-            <Container>
+
+            {
+                    data!=null ?
+                    <>
+                     <Container>
+                
                 <ProductsTable>
                     <thead>
                         <tr>
@@ -133,6 +166,7 @@ function UserCheckout() {
                     <tbody>
 
                         {
+                           
                             data.map((item) =>
                                 <tr key={item.id}>
                                     <td><img src={'http://localhost:8000/' + item.image_path} alt={item.name} /></td>
@@ -156,25 +190,36 @@ function UserCheckout() {
                 </Container>
                 
                 <BillingContainer>
-                    <h2>Billing information</h2>
+                    <h2>Delivery details</h2>
 
                     <input type="text" placeholder="First name" onChange={(e)=>setFirstName(e.target.value)}/>
-                    <br />
+                   
                     <input type="text" placeholder="Last name"  onChange={(e)=>setLastName(e.target.value)}/>
-                    <br />
+                   
                     <input type="text" placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/>
-                    <br />
+                 
                     <input type="text" placeholder="Address" onChange={(e)=>setAddress(e.target.value)}/>
-                    <br />
+                   
                     <input type="text" placeholder="Postal code" onChange={(e)=>setPostalCode(e.target.value)}/>
-                    <br />
+                   
                     <input type="text" placeholder="City" onChange={(e)=>setCity(e.target.value)}/>
-                    <br />
+                   
                     <input type="text" placeholder="Note" onChange={(e)=>setNote(e.target.value)}/>
-                    <br />
-
-                    <button className="btn btn-primary"  onClick={confirmTheOrder}>Confirm the order</button>
+                   
+                    <div className="button-group">
+                    <ConfirmButton  onClick={confirmTheOrder}>Confirm the order</ConfirmButton>
+                    </div>
+                    
                 </BillingContainer>
+                    </> :
+                    <Container>
+                        <h3>No items in cart</h3>
+                    </Container>
+                    
+
+            }
+
+           
             
         </>
     )
